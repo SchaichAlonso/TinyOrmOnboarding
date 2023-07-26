@@ -1,0 +1,4 @@
+[submodule "vcpkg"]
+	path = vcpkg
+	url = git@github.com:SchaichAlonso/vcpkg.git
+	branch = 2023.07.27-tinyorm

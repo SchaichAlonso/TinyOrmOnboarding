@@ -1,0 +1,55 @@
+name: Build
+
+on:
+  push:
+    branches: [ "*" ]
+  #pull_request:
+  #  branches: [ "*" ]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+  NUGET_REPOSITORY_ID: GitHubPackages
+  VCPKG_BINARY_SOURCES: clear;nuget,GitHubPackages,readwrite;nugettimeout,3600
+  VCPKG_NUGET_REPOSITORY: https://github.com/SchaichAlonso/vcpkg
+
+jobs:
+  windows-2022:
+    runs-on: windows-2022
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+
+    - name: Setup NuGet
+      shell: pwsh
+      run: |
+        nuget sources add -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" -storepasswordincleartext -name "${env:NUGET_REPOSITORY_ID}" -username "${{ github.repository_owner }}" -password "${{ secrets.NUGET_TOKEN }}"
+        nuget setapikey "${{ secrets.NUGET_TOKEN }}" -source "${env:NUGET_REPOSITORY_ID}"
+        nuget sources
+
+    - name: Build CMake
+      shell: pwsh
+      run: ./build.ps1
+
+  macos-13:
+    runs-on: macos-12
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+        
+    - name: Setup NuGet
+      shell: pwsh
+      run: |
+        nuget sources add -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" -storepasswordincleartext -name "${env:NUGET_REPOSITORY_ID}" -username "${{ github.repository_owner }}" -password "${{ secrets.NUGET_TOKEN }}"
+        nuget setapikey "${{ secrets.NUGET_TOKEN }}" -source "${env:NUGET_REPOSITORY_ID}"
+        nuget sources
+    
+    - name: Build CMake
+      shell: pwsh
+      run: ./build.ps1    
