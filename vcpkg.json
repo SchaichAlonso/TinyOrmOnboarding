@@ -2,6 +2,8 @@
   "name": "jubilant-enigma",
   "version-string": "0.0.1",
   "dependencies": [
-    "libpng"
+    "qtbase",
+    "qttranslations",
+    "tinyorm"
   ]
 }
