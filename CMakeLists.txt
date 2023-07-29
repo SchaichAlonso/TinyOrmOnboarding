@@ -5,7 +5,7 @@ project(TinyORMOnboarding CXX)
 find_package(Qt6 REQUIRED COMPONENTS Concurrent Core Sql Test)
 qt_standard_project_setup()
 
-find_package(TinyOrm "0.32.1.0")
+find_package(TinyOrm CONFIG REQUIRED)
 
 add_executable(MyTest)
 target_sources(MyTest PRIVATE MyTest.cpp)
