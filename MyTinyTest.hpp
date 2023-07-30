@@ -8,10 +8,13 @@
 
 namespace MyNamespace
 {
-    struct MyTest : QObject
+    struct MyTinyTest : QObject
     {
         Q_OBJECT
             
+    public:
+        MyTinyTest();
+        ~MyTinyTest() Q_DECL_OVERRIDE;
     protected:
         static void demoTable(Orm::SchemaNs::Blueprint &table);
 
@@ -22,8 +25,8 @@ namespace MyNamespace
         void init();
         void cleanup();
 
-        void queryBuilder();
-        void somethingElse();
+        void helloWorld();
+        void invalidInsert();
 
     private:
         std::shared_ptr<Orm::DatabaseManager> m_db;
