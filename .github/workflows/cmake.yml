@@ -30,6 +30,17 @@ jobs:
         nuget setapikey "${{ secrets.NUGET_TOKEN }}" -source "${env:NUGET_REPOSITORY_ID}"
         nuget sources
 
-    - name: Build CMake
+    - name: Build
       shell: pwsh
       run: ./build.ps1
+      
+    - name: Run Tests
+      shell: pwsh
+      run: ./test.ps1
+    
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v2
+      if: always()
+      with:
+        files: |
+          build/result.xml
