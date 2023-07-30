@@ -1,4 +1,4 @@
-#include "MyTest.hpp"
+#include "MyTinyTest.hpp"
 
 namespace MyNamespace
 {
