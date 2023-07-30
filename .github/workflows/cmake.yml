@@ -14,7 +14,7 @@ env:
   VCPKG_NUGET_REPOSITORY: https://github.com/SchaichAlonso/vcpkg
 
 jobs:
-  windows-2022:
+  build:
     runs-on: windows-2022
 
     steps:
@@ -36,11 +36,37 @@ jobs:
       
     - name: Run Tests
       shell: pwsh
-      run: ./test.ps1
+      run: pwsh ./test.ps1
     
-    - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action/composite@v2
+    - name: Upload Test Results
       if: always()
+      uses: actions/upload-artifact@v3
       with:
-        files: |
+        name: Test Results (windows-2022)
+        path: |
           build/result.xml
+      
+  publish-teshresults:
+    name: Publish Test Results
+    needs: build
+    if: >
+      always() &&
+      github.event.sender.login != 'dependabot[bot]' &&
+      ( github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository )
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
+      
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+      
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: |
+            artifacts/**/*.xml
