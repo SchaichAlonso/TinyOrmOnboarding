@@ -33,7 +33,7 @@ jobs:
             -storepasswordincleartext `
             -name "GitHub" `
             -username "${{ github.repository_owner }}" `
-            -password "${{ secrets.GITHUB_TOKEN }}
+            -password "${{ secrets.GITHUB_TOKEN }}"
         nuget setapikey "${{ secrets.GITHUB_TOKEN }}" `
             -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
         nuget sources
