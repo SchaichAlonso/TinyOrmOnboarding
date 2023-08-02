@@ -17,6 +17,10 @@ jobs:
   build:
     runs-on: windows-2022
 
+    permissions:
+      contents: read
+      packages: write
+
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3
