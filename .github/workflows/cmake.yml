@@ -11,7 +11,7 @@ env:
   BUILD_TYPE: Release
   NUGET_REPOSITORY_ID: GitHubPackages
   VCPKG_BINARY_SOURCES: clear;nuget,GitHub,readwrite;nugettimeout,3600
-  VCPKG_NUGET_REPOSITORY: https://github.com/SchaichAlonso/vcpkg.git
+  VCPKG_NUGET_REPOSITORY: https://github.com/SchaichAlonso/vcpkg
 
 jobs:
   build:
