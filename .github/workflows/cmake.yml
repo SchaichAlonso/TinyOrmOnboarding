@@ -26,8 +26,8 @@ jobs:
     - name: Setup NuGet
       shell: pwsh
       run: |
-        nuget sources add -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" -storepasswordincleartext -name "${env:NUGET_REPOSITORY_ID}" -username "${{ github.repository_owner }}" -password "${{ secrets.NUGET_TOKEN }}"
-        nuget setapikey "${{ secrets.NUGET_TOKEN }}" -source "${env:NUGET_REPOSITORY_ID}"
+        nuget sources add -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" -storepasswordincleartext -name "${env:NUGET_REPOSITORY_ID}" -username "${{ github.repository_owner }}" -password "${{ secrets.GITHUB_TOKEN }}"
+        nuget setapikey "${{ secrets.GITHUB_TOKEN }}" -source "${env:NUGET_REPOSITORY_ID}"
         nuget sources
 
     - name: Build
