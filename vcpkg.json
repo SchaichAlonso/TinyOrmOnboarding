@@ -6,7 +6,6 @@
       "name": "qtbase",
       "features": [ "sql", "sql-sqlite" ]
     },
-    "qttranslations",
     {
       "name": "tinyorm",
       "default-features": false
