@@ -15,6 +15,9 @@ env:
 jobs:
   build:
     runs-on: windows-2022
+    permissions:
+      contents: read
+      packages: read
 
     steps:
     - name: Checkout Repository
@@ -25,8 +28,15 @@ jobs:
     - name: Setup NuGet
       shell: pwsh
       run: |
-        nuget sources add -source "https://nuget.pkg.github.com/PurpleFlowerGarden/index.json" -storepasswordincleartext -name "${env:NUGET_REPOSITORY_ID}" -username "${{ github.repository_owner }}" -password "${{ secrets.NUGET_TOKEN }}"
-        nuget setapikey "${{ secrets.NUGET_TOKEN }}" -source "${env:NUGET_REPOSITORY_ID}"
+        nuget sources add `
+          -source "https://nuget.pkg.github.com/PurpleFlowerGarden/index.json" `
+          -storepasswordincleartext `
+          -name "${env:NUGET_REPOSITORY_ID}" `
+          -username "${{ github.repository_owner }}" `
+          -password "${{ secrets.GITHUB_TOKEN }}"
+        nuget setapikey `
+          "${{ secrets.GITHUB_TOKEN }}" `
+          -source "${env:NUGET_REPOSITORY_ID}"
         nuget sources
 
     - name: Build
