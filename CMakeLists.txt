@@ -9,4 +9,4 @@ find_package(TinyOrm CONFIG REQUIRED)
 
 add_executable(MyTest)
 target_sources(MyTest PRIVATE MyTinyTest.cpp)
-target_link_libraries(MyTest PRIVATE Qt::Core Qt::Test TinyOrm::TinyOrm)
+target_link_libraries(MyTest PRIVATE Qt::Core Qt::Sql Qt::Test TinyOrm::TinyOrm)
