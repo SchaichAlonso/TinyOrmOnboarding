@@ -6,10 +6,15 @@ if (${env:BUILD_TYPE} -eq ${null}) {
   ${env:BUILD_TYPE}="debug"
 }
 
+if (${env:VCPKG_TARGET_TRIPLET} -eq ${null}) {
+  ${env:VCPKG_TARGET_TRIPLET}="x64-windows"
+}
+
 cmake `
 	-B ${env:GITHUB_WORKSPACE}/build `
 	-DVCPKG_VERBOSE=ON `
 	-DVCPKG_INSTALL_OPTIONS="--debug" `
+ 	-DVCPKG_TARGET_TRIPLET="${env:VCPKG_TARGET_TRIPLET}" `
 	-DCMAKE_TOOLCHAIN_FILE="${env:GITHUB_WORKSPACE}/vcpkg/scripts/buildsystems/vcpkg.cmake" `
 	${env:GITHUB_WORKSPACE}
 
