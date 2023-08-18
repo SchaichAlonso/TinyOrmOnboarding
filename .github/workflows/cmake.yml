@@ -37,6 +37,8 @@ jobs:
             vcpkg_library_linkage: 'dynamic'
   
     runs-on: ${{ matrix.os }}
+    env:
+      VCPKG_TARGET_TRIPLET: ${{ matrix.vcpkg_target_triplet }}
     
     permissions:
       contents: read
