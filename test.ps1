@@ -6,7 +6,11 @@ if (${env:BUILD_TYPE} -eq ${null}) {
   ${env:BUILD_TYPE}="debug"
 }
 
-$vcpkgPrefix="${env:GITHUB_WORKSPACE}/build/vcpkg_installed/x64-windows/"
+if (${env:VCPKG_TARGET_TRIPLET} -eq ${null}) {
+  ${env:VCPKG_TARGET_TRIPLET}="x64-windows"
+}
+
+$vcpkgPrefix="${env:GITHUB_WORKSPACE}/build/vcpkg_installed/${env:VCPKG_TARGET_TRIPLET}/"
 if ($env:BUILD_TYPE -eq "Debug") {
 	$vcpkgPrefix="${vcpkgPrefix}/debug"
 }
