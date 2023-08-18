@@ -15,6 +15,7 @@ env:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         os: ['windows-2022', 'ubuntu-22.04']
         vcpkg_library_linkage: ['dynamic', 'static']
