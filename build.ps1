@@ -29,4 +29,4 @@ cmake `
 	-DMSVC_RUNTIME_DYNAMIC="${msvc_runtime_dynamic}" `
 	${env:GITHUB_WORKSPACE}
 
-cmake --build ${env:GITHUB_WORKSPACE}/build --config ${env:BUILD_TYPE} -- ${cmake_build_args}
+cmake --build ${env:GITHUB_WORKSPACE}/build --config ${env:BUILD_TYPE} --verbose -- ${cmake_build_args}
