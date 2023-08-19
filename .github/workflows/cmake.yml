@@ -7,19 +7,55 @@ on:
     branches: [ "*" ]
 
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
   NUGET_REPOSITORY_ID: GitHubPackages
   VCPKG_BINARY_SOURCES: clear;nuget,GitHubPackages,read;nugettimeout,3600
 
 jobs:
   build:
-    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['windows-2022', 'ubuntu-22.04']
+        vcpkg_library_linkage: ['dynamic', 'static']
+        build_type: ['Debug', 'Release']
+        include:
+          - os: 'ubuntu-22.04'
+            mono: 'mono'
+          - os: 'windows-2022'
+            mono: ''
+          - os: 'ubuntu-22.04'
+            vcpkg_library_linkage: 'static'
+            vcpkg_target_triplet: 'x64-linux'
+          - os: 'windows-2022'
+            vcpkg_library_linkage: 'dynamic'
+            vcpkg_target_triplet: 'x64-windows'
+          - os: 'windows-2022'
+            vcpkg_library_linkage: 'static'
+            vcpkg_target_triplet: 'x64-windows-static'
+        exclude:
+          - os: 'ubuntu-22.04'
+            vcpkg_library_linkage: 'dynamic'
+  
+    runs-on: ${{ matrix.os }}
+    env:
+      VCPKG_TARGET_TRIPLET: ${{ matrix.vcpkg_target_triplet }}
+      BUILD_TYPE: ${{ matrix.build_type }}
+    
     permissions:
       contents: read
       packages: read
 
     steps:
+    - name: Install Ubuntu dependencies
+      if: ${{ matrix.os == 'ubuntu-22.04' }}
+      shell: bash
+      run: |
+        sudo apt-get install autoconf-archive
+        sudo apt-get install '^libxcb.*-dev' \
+          libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev \
+          libxkbcommon-x11-dev
+        sudo apt-get install libgl1-mesa-dev mesa-common-dev
+    
     - name: Checkout Repository
       uses: actions/checkout@v3
       with:
@@ -47,13 +83,13 @@ jobs:
       shell: pwsh
       run: pwsh ./test.ps1
     
-    - name: Upload Test Results
+    - name: Create Test Result Artifact
       if: always()
       uses: actions/upload-artifact@v3
       with:
-        name: Test Results (windows-2022)
+        name: Test Results (${{ matrix.vcpkg_target_triplet }})
         path: |
-          build/result.xml
+          build/*.xml
       
   publish-teshresults:
     name: Publish Test Results
