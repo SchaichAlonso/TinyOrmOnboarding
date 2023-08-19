@@ -83,13 +83,13 @@ jobs:
       shell: pwsh
       run: pwsh ./test.ps1
     
-    - name: Upload Test Results
+    - name: Create Test Result Artifact
       if: always()
       uses: actions/upload-artifact@v3
       with:
         name: Test Results (${{ matrix.vcpkg_target_triplet }})
         path: |
-          build/result.xml
+          build/*.xml
       
   publish-teshresults:
     name: Publish Test Results
